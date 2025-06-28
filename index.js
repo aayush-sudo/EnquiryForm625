@@ -27,8 +27,8 @@ app.post("/save",(req,res) => {
         let mailOptions = {
             from : "aayush.hardas@gmail.com",
             to : "aayush.hardas@gmail.com",
-            subject : "Enquiry From : " + req.body.query,
-            text : "Phone : " + req.body.phone + "Query : " + req.body.query
+            subject : "Enquiry From : " + req.body.name,
+            text : "Phone : " + req.body.phone + "Query : " + "\n" + req.body.query
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
