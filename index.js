@@ -35,14 +35,14 @@ app.post("/save",(req,res) => {
                 from: process.env.EMAIL_USER,
                 to: req.body.email,
                 subject: "Your Enquiry Receipt",
-                text: `Dear ${req.body.name},\n\nThank You For Contacting Us.\n\nThis is a Copy of your Enquiry:\n\nPhone: ${req.body.phone}\nQuery: ${req.body.query}\n\nWe Will Get Back To You Shortly.\n\nThank You`
+                text: `Dear ${req.body.name},\nThank You For Contacting Us.\n\nThis is a Copy of your Enquiry:\n\nPhone: ${req.body.phone}\nQuery: ${req.body.query}\n\nWe Will Get Back To You Shortly.\nThank You`
         };
 
          transporter.sendMail(mailOptions, (error, info) => {
             if(error)
             {
                 console.log(error);
-                return res.status(500).json(error);
+                return res.status(500).json({ error: "Email to Admin Failed" });
             }
 
             transporter.sendMail(userMailOptions, (userErr, userInfo) => {
