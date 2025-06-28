@@ -28,14 +28,14 @@ app.post("/save",(req,res) => {
             from : process.env.EMAIL_USER,
             to : process.env.EMAIL_USER,
             subject : "Enquiry From : " + req.body.name,
-            text : "Phone : " + req.body.phone + "\n" + "Query : " + req.body.query
+            text: "Name : " + req.body.name + "\n" + "Phone : " + req.body.phone + "\n" + "Query : " + req.body.query
         };
 
         let userMailOptions = {
                 from: process.env.EMAIL_USER,
                 to: req.body.email,
                 subject: "Your Enquiry Receipt",
-                text: `Dear ${req.body.name},\nThank You For Contacting Us.\n\nThis is a Copy of your Enquiry:\n\nPhone: ${req.body.phone}\nQuery: ${req.body.query}\n\nWe Will Get Back To You Shortly.\nThank You`
+                text: `Dear ${req.body.name},\nThank You For Contacting Us.\n\nThis is a Copy of your Enquiry:\n\nName: ${req.body.name}\nPhone: ${req.body.phone}\nQuery: ${req.body.query}\n\nWe Will Get Back To You Shortly.\nThank You`
         };
 
          transporter.sendMail(mailOptions, (error, info) => {
