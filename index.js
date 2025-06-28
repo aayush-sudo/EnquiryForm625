@@ -25,10 +25,17 @@ app.post("/save",(req,res) => {
         });
 
         let mailOptions = {
-            from : "aayush.hardas@gmail.com",
-            to : "aayush.hardas@gmail.com",
+            from : process.env.EMAIL_USER,
+            to : process.env.EMAIL_USER,
             subject : "Enquiry From : " + req.body.name,
             text : "Phone : " + req.body.phone + "\n" + "Query : " + req.body.query
+        };
+
+        let userMailOptions = {
+                from: process.env.EMAIL_USER,
+                to: req.body.email,
+                subject: "Your Enquiry Receipt",
+                text: "Dear ${req.body.name},\n\nThank You For Contacting Us.\n\nThis is a Copy of your Enquiry:\n\nPhone: ${req.body.phone}\nQuery: ${req.body.query}\n\nWe Will Get Back To Tou Shortly.\n\nThank You"
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -39,9 +46,19 @@ app.post("/save",(req,res) => {
             }
             return res.status(200).json("mail send");
         });
+
+        transporter.sendMail(userMailOptions, (userErr, userInfo) => {
+                    if(userErr) 
+                    {
+                        console.log(userErr);
+                        return res.status(500).json({ error: "Email to User Failed" });
+                    }
+                    return res.status(200).json("Both Mails Sent");
+        });
+
     })
     .catch(err => {
-        res.status(500).send(error);
+        res.status(500).send(err);
     });
 });
 
