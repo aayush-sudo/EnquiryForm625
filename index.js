@@ -13,7 +13,7 @@ app.post("/save",(req,res) => {
     const con = new MongoClient(url);
     const db = con.db("enquiry_28june25");
     const coll = db.collection("enquiry");
-    const doc = {"name":req.body.name, "phone":req.body.phone, "query":"\n"+req.body.query,"en_dt":new Date().toString()};
+    const doc = {"name":req.body.name, "phone":req.body.phone, "query":req.body.query,"en_dt":new Date().toString()};
     coll.insertOne(doc)
     .then(response => {
         let transporter = nodemailer.createTransport({
@@ -28,7 +28,7 @@ app.post("/save",(req,res) => {
             from : "aayush.hardas@gmail.com",
             to : "aayush.hardas@gmail.com",
             subject : "Enquiry From : " + req.body.name,
-            text : "Phone : " + req.body.phone + "Query : " + "\n" + req.body.query
+            text : "Phone : " + req.body.phone + "\n" + "Query : " + req.body.query
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
