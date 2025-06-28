@@ -13,7 +13,7 @@ app.post("/save",(req,res) => {
     const con = new MongoClient(url);
     const db = con.db("enquiry_28june25");
     const coll = db.collection("enquiry");
-    const doc = {"name":req.body.name, "phone":req.body.phone, "query":req.body.query,"en_dt":new Date().toString()};
+    const doc = {"name":req.body.name, "email":req.body.email, "phone":req.body.phone, "query":req.body.query,"en_dt":new Date().toString()};
     coll.insertOne(doc)
     .then(response => {
         let transporter = nodemailer.createTransport({
@@ -35,7 +35,7 @@ app.post("/save",(req,res) => {
                 from: process.env.EMAIL_USER,
                 to: req.body.email,
                 subject: "Your Enquiry Receipt",
-                text: "Dear ${req.body.name},\n\nThank You For Contacting Us.\n\nThis is a Copy of your Enquiry:\n\nPhone: ${req.body.phone}\nQuery: ${req.body.query}\n\nWe Will Get Back To Tou Shortly.\n\nThank You"
+                text: `Dear ${req.body.name},\n\nThank You For Contacting Us.\n\nThis is a Copy of your Enquiry:\n\nPhone: ${req.body.phone}\nQuery: ${req.body.query}\n\nWe Will Get Back To Tou Shortly.\n\nThank You`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -44,8 +44,8 @@ app.post("/save",(req,res) => {
                 console.log(error);
                 return res.status(500).json(error);
             }
-            return res.status(200).json("mail send");
-        });
+            //return res.status(200).json("mail send");
+        //});
 
         transporter.sendMail(userMailOptions, (userErr, userInfo) => {
                     if(userErr) 
@@ -55,8 +55,8 @@ app.post("/save",(req,res) => {
                     }
                     return res.status(200).json("Both Mails Sent");
         });
-
-    })
+    });
+})
     .catch(err => {
         res.status(500).send(err);
     });
